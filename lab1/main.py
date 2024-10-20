@@ -4,24 +4,61 @@ from sly import Lexer
 
 class Scanner(Lexer):
 
-    Lexer
+    literals = ['+',
+                '-',
+                '*',
+                '/',
+                '=',
+                '<',
+                '>',
+                '(',
+                ')',
+                '[',
+                ']',
+                '{',
+                '}',
+                ':',
+                '\'',
+                ',',
+                ';',
+                '"']
 
-    literals = ['+', '-', '*', '/', '=', '<', '>', '(', ')', '[', ']', '{', '}', ':', '\'', ',', ';', '"']
+    reserved = {'if': 'IF',
+                'else': 'ELSE',
+                'for': 'FOR',
+                'while': 'WHILE',
+                'break': 'BREAK',
+                'continue': 'CONTINUE',
+                'return': 'RETURN',
+                'eye': 'EYE',
+                'zeros': 'ZEROS',
+                'ones': 'ONES',
+                'print': 'PRINT'}
 
-    reserved = {'if': 'IF', 'else': 'ELSE', 'for': 'FOR', 'while': 'WHILE', 'break': 'BREAK', 'continue': 'CONTINUE', 'return': 'RETURN', 'eye': 'EYE', 'zeros': 'ZEROS', 'ones': 'ONES', 'print': 'PRINT'}
-
-    tokens = ["ID", "INTNUM", 'FLOATNUM', "DOTADD", "DOTSUB", "DOTMUL", "DOTDIV", "ADDASSIGN", "SUBASSIGN", "MULASSIGN", "DIVASSIGN", "EQUAL", 'NOTEQUAL', 'LESSOREQUAL', 'GREATEROREQUAL'] + list(reserved.values())
+    tokens = ["ID", "DOTADD", "DOTSUB", "DOTMUL", "DOTDIV", "ADDASSIGN", "SUBASSIGN", "MULASSIGN", "DIVASSIGN", "EQUAL", 'NOTEQUAL', 'LESSOREQUAL', 'GREATEROREQUAL', "INTNUM", 'FLOATNUM', 'STRING'] + list(reserved.values())
 
     ignore = ' \t'
     ignore_comment = r'\#.*'
     ignore_newline = r'\n+'
 
-    # Definicja nowej linii
     @_(r'\n+')
     def ignore_newline(self, t):
         self.lineno += len(t.value)  # Śledzenie liczby linii
 
     ID = r'[a-zA-Z_][a-zA-Z0-9_]*'
+
+    @_(ID)
+    def ID(self, t):
+        t.type = self.reserved.get(t.value, 'ID')  # Sprawdza, czy identyfikator jest w zarezerwowanych słowach
+        return t
+
+    STRING = r'"[^"]*"'
+
+    # Definicja stringów w cudzysłowach
+    @_(STRING)
+    def STRING(self, t):
+        t.value = t.value[1:-1]  # Usuwamy cudzysłowy z wartości stringa
+        return t
 
     FLOATNUM = r'([0-9]+\.[0-9]*|\.[0-9]+)'
     INTNUM = r'\b[0-9]+\b(?!\.[0-9]+)'
