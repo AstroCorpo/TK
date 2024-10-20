@@ -1,0 +1,11 @@
+# Ignoruj wszystkie pliki środowiskowe
+*.venv
+poetry.lock
+*.toml
+
+# Ignoruj .idea
+*.idea
+
+#Ignoruj __pycache__
+__pycache__/
+*.pyc
