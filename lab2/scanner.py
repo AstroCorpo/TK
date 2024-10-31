@@ -18,6 +18,7 @@ class Scanner(Lexer):
                 '{',
                 '}',
                 ':',
+                '\'',
                 ',',
                 ';',
                 '"']
@@ -34,7 +35,7 @@ class Scanner(Lexer):
                 'ones': 'ONES',
                 'print': 'PRINT'}
 
-    tokens = ["ID", "DOTADD", "DOTSUB", "DOTMUL", "DOTDIV", "TRANSPOSE", "ADDASSIGN", "SUBASSIGN", "MULASSIGN", "DIVASSIGN", "EQUAL", 'NOTEQUAL', 'LESSOREQUAL', 'GREATEROREQUAL', "INTNUM", 'FLOATNUM', 'STRING'] + list(reserved.values())
+    tokens = ["ID", "DOTADD", "DOTSUB", "DOTMUL", "DOTDIV", "ADDASSIGN", "SUBASSIGN", "MULASSIGN", "DIVASSIGN", "EQUAL", 'NOTEQUAL', 'LESSOREQUAL', 'GREATEROREQUAL', "INTNUM", 'FLOATNUM', 'STRING'] + list(reserved.values())
 
     ignore = ' \t'
     ignore_comment = r'\#.*'
@@ -62,22 +63,17 @@ class Scanner(Lexer):
 
     INTNUM = r'\b[0-9]+\b(?!\.[0-9]+)'
 
-
     DOTADD = r'\.\+'
+
+    SUBASSIGN = r'\-\='
 
     DOTSUB = r'\.\-'
 
     DOTMUL = r'\.\*'
 
-    DOTDIV = r'\.\/'
-
-    TRANSPOSE = '\''
-
-    ADDASSIGN = r'\+\='
-
-    SUBASSIGN = r'\-\='
-
     MULASSIGN = r'\*\='
+
+    DOTDIV = r'\.\/'
 
     DIVASSIGN = r'\/\='
 
@@ -86,18 +82,3 @@ class Scanner(Lexer):
     GREATEROREQUAL = r'>='
 
     EQUAL = r'=='
-
-if __name__ == '__main__':
-
-    try:
-        filename = sys.argv[1] if len(sys.argv) > 1 else "/home/piotr/TK/lab1/example_full.txt"
-        file = open(filename, "r")
-    except IOError:
-        print("Cannot open {0} file".format(filename))
-        sys.exit(0)
-
-    text = file.read()
-    lexer = Scanner()
-
-    for tok in lexer.tokenize(text):
-        print("(" + str(tok.lineno) + ")" + ": " + tok.type + "(" + tok.value + ")")
