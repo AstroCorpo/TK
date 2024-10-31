@@ -43,24 +43,24 @@ class Scanner(Lexer):
 
     @_(r'\n+')
     def ignore_newline(self, t):
-        self.lineno += len(t.value)  # Śledzenie liczby linii
+        self.lineno += len(t.value)
 
     ID = r'[a-zA-Z_][a-zA-Z0-9_]*'
 
     @_(ID)
     def ID(self, t):
-        t.type = self.reserved.get(t.value, 'ID')  # Sprawdza, czy identyfikator jest w zarezerwowanych słowach
+        t.type = self.reserved.get(t.value, 'ID')
         return t
 
     STRING = r'"[^"]*"'
 
-    # Definicja stringów w cudzysłowach
     @_(STRING)
     def STRING(self, t):
-        t.value = t.value[1:-1]  # Usuwamy cudzysłowy z wartości stringa
+        t.value = t.value[1:-1]
         return t
 
-    FLOATNUM = r'([0-9]+\.[0-9]*|\.[0-9]+)'
+    FLOATNUM = r'([0-9]+\.[0-9]*|\.[0-9]+)([eE][+-]?[0-9]+)?'
+
     INTNUM = r'\b[0-9]+\b(?!\.[0-9]+)'
 
     DOTADD = r'\.\+'
@@ -84,7 +84,7 @@ class Scanner(Lexer):
 if __name__ == '__main__':
 
     try:
-        filename = sys.argv[1] if len(sys.argv) > 1 else "lab1/example_full.txt"
+        filename = sys.argv[1] if len(sys.argv) > 1 else "lab1/example.txt"
         file = open(filename, "r")
     except IOError:
         print("Cannot open {0} file".format(filename))
