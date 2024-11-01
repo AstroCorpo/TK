@@ -1,5 +1,4 @@
 import sys
-from math import factorial
 
 from scanner import Scanner
 
@@ -11,7 +10,11 @@ class Mparser(Parser):
 
     # debugfile = 'parser.out'
 
-    # Grammar rules and actions
+    precedence = (
+        ('nonassoc', EQUAL, NOTEQUAL, GREATEROREQUAL, LESSOREQUAL),
+
+    )
+
     @_('expr "+" term')
     def expr(self, p):
         return p.expr + p.term
