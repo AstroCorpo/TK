@@ -17,8 +17,8 @@ class Scanner(Lexer):
                 ']',
                 '{',
                 '}',
+                "\'",
                 ':',
-                '\'',
                 ',',
                 ';',
                 '"']
@@ -63,6 +63,8 @@ class Scanner(Lexer):
 
     INTNUM = r'\b[0-9]+\b(?!\.[0-9]+)'
 
+    ADDASSIGN = r'\+\='
+
     DOTADD = r'\.\+'
 
     SUBASSIGN = r'\-\='
@@ -77,8 +79,10 @@ class Scanner(Lexer):
 
     DIVASSIGN = r'\/\='
 
+    EQUAL = r'=='
+
+    NOTEQUAL = r'!='
+
     LESSOREQUAL = r'<='
 
     GREATEROREQUAL = r'>='
-
-    EQUAL = r'=='

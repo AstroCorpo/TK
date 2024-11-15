@@ -17,7 +17,12 @@ res2 = 60.;
 res3 = .500;
 res4 = 60.52E2;
 res5 = 10E10;
-str = "Hello world";
+str = "Hello
+w
+o
+r
+l
+d";
 
 if (m==n) { 
     if (m >= n) 

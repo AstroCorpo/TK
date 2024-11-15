@@ -18,6 +18,7 @@ class Scanner(Lexer):
                 '{',
                 '}',
                 ':',
+                "\'",
                 ',',
                 ';',
                 '"']
@@ -34,54 +35,44 @@ class Scanner(Lexer):
                 'ones': 'ONES',
                 'print': 'PRINT'}
 
-    tokens = ["ID", "DOTADD", "DOTSUB", "DOTMUL", "DOTDIV", "TRANSPOSE", "ADDASSIGN", "SUBASSIGN", "MULASSIGN", "DIVASSIGN", "EQUAL", 'NOTEQUAL', 'LESSOREQUAL', 'GREATEROREQUAL', "INTNUM", 'FLOATNUM', 'STRING'] + list(reserved.values())
+    tokens = ["ID", "DOTADD", "DOTSUB", "DOTMUL", "DOTDIV", "ADDASSIGN", "SUBASSIGN", "MULASSIGN", "DIVASSIGN", "EQUAL", 'NOTEQUAL', 'LESSOREQUAL', 'GREATEROREQUAL', "INTNUM", 'FLOATNUM', 'STRING'] + list(reserved.values())
 
-    @_(r' ')
-    def ignore_space(self, t):
-        pass
-
-    @_(r'\t')
-    def ignore_tab(self, t):
-        pass
-
-    @_(r'\#.*')
-    def ignore_comment(self, t):
-        pass
+    ignore = ' \t'
+    ignore_comment = r'\#.*'
 
     @_(r'\n+')
     def ignore_newline(self, t):
         self.lineno += len(t.value)
 
-    @_(r'[a-zA-Z_][a-zA-Z0-9_]*')
+    ID = r'[a-zA-Z_][a-zA-Z0-9_]*'
+
+    @_(ID)
     def ID(self, t):
         t.type = self.reserved.get(t.value, 'ID')
         return t
 
-    @_(r'"[^"]*"')
+    STRING = r'"[^"]*"'
+
+    @_(STRING)
     def STRING(self, t):
         t.value = t.value[1:-1]
-        self.lineno += t.value.count('\n')
         return t
 
-    FLOATNUM = r'([0-9]+\.[0-9]*|\.[0-9]+|[0-9]+\.[0-9]*[eE][+-]?[0-9]+|[0-9]+[eE][+-]?[0-9]+)'
+    FLOATNUM = r'([0-9]+\.[0-9]*|\.[0-9]+)([eE][+-]?[0-9]+)?'
 
     INTNUM = r'[0-9]+'
 
     DOTADD = r'\.\+'
 
+    SUBASSIGN = r'\-\='
+
     DOTSUB = r'\.\-'
 
     DOTMUL = r'\.\*'
 
-    DOTDIV = r'\.\/'
-
-    TRANSPOSE = '\''
-
-    ADDASSIGN = r'\+\='
-
-    SUBASSIGN = r'\-\='
-
     MULASSIGN = r'\*\='
+
+    DOTDIV = r'\.\/'
 
     DIVASSIGN = r'\/\='
 

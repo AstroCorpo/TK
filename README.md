@@ -1,2 +1,4 @@
 # TK
 Theory of compilation
+
+NAPRAWIĆ WIELOLINIJKOWE STRINGI

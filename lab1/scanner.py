@@ -18,7 +18,7 @@ class Scanner(Lexer):
                 '{',
                 '}',
                 ':',
-                '\'',
+                "\'",
                 ',',
                 ';',
                 '"']
@@ -61,7 +61,7 @@ class Scanner(Lexer):
 
     FLOATNUM = r'([0-9]+\.[0-9]*|\.[0-9]+)([eE][+-]?[0-9]+)?'
 
-    INTNUM = r'\b[0-9]+\b(?!\.[0-9]+)'
+    INTNUM = r'[0-9]+'
 
     DOTADD = r'\.\+'
 
